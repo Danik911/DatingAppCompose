@@ -11,19 +11,29 @@ sealed class WelcomePage(
 ) {
     object First : WelcomePage(
         title = "Приветствуем вас!",
-        description = "Вы запустили приложение по выбору идеальногопартнера",
+        description = "Вы запустили приложение по выбору идеального партнера",
         buttonText = "Далее"
     )
 
     object Second : WelcomePage(
-        title = "Explore",
-        description = "Find your favorite heroes and learn some of the things that you didn't know about.",
+        title = "Пожалуйста...",
+        description = "Отнеситесь к этому тесту серьезно. От него будет зависеть выбор вашего партнера.",
         buttonText = "Далее"
     )
 
     object Third : WelcomePage(
-        title = "Power",
-        description = "Check out your hero's power and  see how much are they strong comparing to others.",
+        title = "Внимание!",
+        description = "Вы выглядите превосходно!",
         buttonText = "Далее"
+    )
+    object Forth : WelcomePage(
+        title = "Ответьте на 5 вопросов",
+        description = "Это даст понять как вы любите проводить свободное время",
+        buttonText = "Далее"
+    )
+    object Fifth : WelcomePage(
+        title = "Вы готовы?",
+        description = "Встретить свою любовь",
+        buttonText = "Поехали!"
     )
 }

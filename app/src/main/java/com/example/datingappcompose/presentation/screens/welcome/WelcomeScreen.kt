@@ -1,33 +1,26 @@
 package com.example.datingappcompose.presentation.screens.welcome
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.datingappcompose.R
 import com.example.datingappcompose.domain.model.WelcomePage
-import com.example.datingappcompose.navigation.Screen
-import com.example.datingappcompose.ui.theme.AccentColor
-import com.example.datingappcompose.ui.theme.HORIZONTAL_PAGER_COUNT
-import com.example.datingappcompose.ui.theme.StrokeColor
-import com.example.datingappcompose.ui.theme.WelcomeBackgroundColor
+import com.example.datingappcompose.ui.theme.*
+import com.example.datingappcompose.util.Constants.HORIZONTAL_PAGER_COUNT
 import com.google.accompanist.pager.*
 
 
@@ -39,94 +32,115 @@ fun WelcomeScreen(
     val pages = listOf(
         WelcomePage.First,
         WelcomePage.Second,
-        WelcomePage.Third
+        WelcomePage.Third,
+        WelcomePage.Forth,
+        WelcomePage.Fifth
     )
     val pagerState = rememberPagerState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = WelcomeBackgroundColor)
-            .padding(start = 30.dp, end = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        HorizontalPager(
-            modifier = Modifier.weight(10f),
-            count = HORIZONTAL_PAGER_COUNT,
-            state = pagerState,
-            verticalAlignment = Alignment.Top
-        ) { position ->
-            PagerScreen(WelcomePage = pages[position], modifier = Modifier)
-        }
-
-        /*   FinishButton(pagerState = pagerState, modifier = Modifier.weight(1f)) {
-               navHostController.popBackStack()
-               navHostController.navigate(Screen.Home.route)
-           }*/
+    HorizontalPager(
+        count = HORIZONTAL_PAGER_COUNT,
+        state = pagerState,
+        verticalAlignment = Alignment.Bottom
+    ) { position ->
+        PagerScreen(welcomePage = pages[position], modifier = Modifier, onClickFinish = {})
     }
 
-
+    /*   FinishButton(pagerState = pagerState, modifier = Modifier.weight(1f)) {
+           navHostController.popBackStack()
+           navHostController.navigate(Screen.Home.route)
+       }*/
 }
 
+
 @Composable
-fun PagerScreen(WelcomePage: WelcomePage, modifier: Modifier) {
+fun PagerScreen(welcomePage: WelcomePage, modifier: Modifier, onClickFinish: () -> Unit) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(White)
-            .padding(30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
+            .fillMaxHeight()
+            .background(color = WelcomeBackgroundColor),
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = WelcomePage.title,
-            //color = MaterialTheme.colors.titleColor,
-            fontSize = MaterialTheme.typography.h4.fontSize,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(StrokeColor)
-                .height(1.dp)
         ) {
-
+        IconButton(onClick = {}) {
+            Icon(
+                modifier = Modifier.padding(start = 6.dp, top = 20.dp),
+                tint = AccentColor,
+                painter = painterResource(id = R.drawable.ic_icon_arrow_left),
+                contentDescription = "Back icon"
+            )
         }
-        Text(
+        Surface(
             modifier = Modifier
-                .fillMaxWidth(),
-            text = WelcomePage.description,
-            //color = MaterialTheme.colors.descriptionColor,
-            fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
-        )
-        FinishButton() {
+                .padding(start = 30.dp, end = 30.dp, top = 60.dp, bottom = 70.dp),
+            shape = RoundedCornerShape(Shapes.pagerShape),
+
+
+            ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(White)
+                    .padding(30.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 70.dp, bottom = 46.dp),
+                    text = welcomePage.title,
+                    color = Black,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Row(
+                    modifier = Modifier
+                        .width(98.dp)
+                        .background(StrokeColor)
+                        .height(1.dp)
+                ) {
+
+                }
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 60.dp, start = 42.dp, end = 42.dp),
+                    text = welcomePage.description,
+                    color = BodyColor,
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
+                )
+
+            }
 
         }
-
+        FinishButton(modifier = Modifier, onClickFinish = onClickFinish, welcomePage = welcomePage)
     }
+
+
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun FinishButton(onClickFinish: () -> Unit) {
+fun FinishButton(onClickFinish: () -> Unit, modifier: Modifier, welcomePage: WelcomePage) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-        //.padding(horizontal = PADDING_EXTRA_LARGE)
+            .padding(start = 60.dp, end = 60.dp)
+
+
     ) {
 
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier
+                .size(width = 300.dp, height = 60.dp),
             onClick = onClickFinish,
-            colors = ButtonDefaults.buttonColors(AccentColor)
+            colors = ButtonDefaults.buttonColors(AccentColor),
+            shape = RoundedCornerShape(Shapes.buttonShape),
         ) {
-            Text(text = "Finish", color = White)
+            Text(text = welcomePage.buttonText, color = White)
         }
     }
 
@@ -137,7 +151,7 @@ fun FinishButton(onClickFinish: () -> Unit) {
 @Preview(showBackground = true)
 fun WelcomeScreenPreview() {
     Column(modifier = Modifier) {
-        PagerScreen(WelcomePage = WelcomePage.First, modifier = Modifier)
+        PagerScreen(welcomePage = WelcomePage.First, modifier = Modifier, onClickFinish = {})
     }
 
 }

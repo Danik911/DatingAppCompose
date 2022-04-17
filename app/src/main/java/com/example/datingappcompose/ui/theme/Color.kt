@@ -12,3 +12,4 @@ val WelcomeBackgroundColor = Color(0xFFD9D6DC)
 val AccentColor = Color(0xFF9C1DB1)
 val StrokeColor = Color(0xFFD8D8D8)
 
+val BodyColor = Color(0xFF010204)

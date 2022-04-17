@@ -1,3 +1,11 @@
 package com.example.datingappcompose.ui.theme
 
-val HORIZONTAL_PAGER_COUNT = 3
+import androidx.compose.ui.unit.dp
+
+
+
+val PAGER_SURFACE_HEIGHT = 460.dp
+
+
+
+
